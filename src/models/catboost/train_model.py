@@ -28,7 +28,7 @@ def main():
     model = CatBoostRegressor(
         iterations=catboost_iterations,
         learning_rate=catboost_learning_rate,
-        cat_features=CAT_COLS,
+        cat_features=TRAIN_CAT_COLS,
         eval_metric=catboost_eval_metric,
     )
 

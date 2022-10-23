@@ -10,14 +10,14 @@ stages:
       md5: 80ccab65fb115cbad143dbbd2bcd5577
       size: 460676
     - path: src/config.py
-      md5: c0367088af98430432688ef14798ad96
-      size: 2552
+      md5: 818d08ec6794d822ebac2974183b74f6
+      size: 2795
     - path: src/data/make_dataset.py
       md5: b6a4d95ff4015fef8bf682d13cb07e1a
       size: 1184
     - path: src/data/preprocess.py
-      md5: 6416cd23173ab67fca6cba1b83d429cb
-      size: 1043
+      md5: 0412d45bf09aa361329d1442b665712c
+      size: 1021
     - path: src/utils.py
       md5: a63e9fc88f67423ded9b88dcd49a34f6
       size: 375
@@ -132,14 +132,14 @@ stages:
       md5: 223d0baf1ca19913f2fd1dab9a2dcabf
       size: 517727
     - path: src/config.py
-      md5: c0367088af98430432688ef14798ad96
-      size: 2552
+      md5: 818d08ec6794d822ebac2974183b74f6
+      size: 2795
     - path: src/features/build_features.py
       md5: 8e439f7f77fb7c8daaa41c3d5c1d47bf
       size: 1232
     - path: src/features/features.py
-      md5: dee555a1230b989fa0ef038b95c9f638
-      size: 445
+      md5: 63810ab0c6707e851a8fd607abb18c97
+      size: 732
     - path: src/utils.py
       md5: a63e9fc88f67423ded9b88dcd49a34f6
       size: 375
@@ -150,34 +150,120 @@ stages:
             YEAR_SOLD: YrSold
             YEAR_BUILT: YearBuilt
             BUILDING_AGE: BuildingAge
+            HAS_FENCE: HasFence
+            HAS_POOL: HasPool
           paths:
             featurized_train_data_pkl: data/interim/featurized_train_data_pkl
             featurized_test_data_pkl: data/interim/featurized_test_data_pkl
     outs:
     - path: data/interim/featurized_test_data_pkl
-      md5: 0d9a821ba9e8df33b8a92016065c3b77
-      size: 505522
+      md5: 00f02f2767e9c74802aa57fce0148b44
+      size: 515967
     - path: data/interim/featurized_train_data_pkl
-      md5: 223d0baf1ca19913f2fd1dab9a2dcabf
-      size: 517727
+      md5: 0320eef95660b01bbd5780fe9dfd7575
+      size: 528140
   train_catboost:
     cmd: python -m src.models.catboost.train_model --config=params.yaml
     deps:
     - path: data/interim/featurized_train_data_pkl
-      md5: 223d0baf1ca19913f2fd1dab9a2dcabf
-      size: 517727
+      md5: 0320eef95660b01bbd5780fe9dfd7575
+      size: 528140
     - path: src/config.py
-      md5: c0367088af98430432688ef14798ad96
-      size: 2552
+      md5: 818d08ec6794d822ebac2974183b74f6
+      size: 2795
     - path: src/models/catboost/train_model.py
-      md5: 8e58dee394ae2c53332720084ba75ad3
-      size: 1674
+      md5: 8a4ab7adeca63fb64b2f9efece911df5
+      size: 1680
     - path: src/models/utils.py
       md5: 7ae8f6b833ba2e35fd353c67aa8c400e
       size: 554
     params:
       params.yaml:
         train_models:
+          cols:
+            REAL_COLS:
+            - MSSubClass
+            - LotFrontage
+            - LotArea
+            - OverallQual
+            - OverallCond
+            - YearBuilt
+            - YearRemodAdd
+            - MasVnrArea
+            - BsmtFinSF1
+            - BsmtFinSF2
+            - BsmtUnfSF
+            - TotalBsmtSF
+            - 1stFlrSF
+            - 2ndFlrSF
+            - LowQualFinSF
+            - GrLivArea
+            - BsmtFullBath
+            - BsmtHalfBath
+            - FullBath
+            - HalfBath
+            - BedroomAbvGr
+            - KitchenAbvGr
+            - TotRmsAbvGrd
+            - Fireplaces
+            - GarageYrBlt
+            - GarageCars
+            - GarageArea
+            - WoodDeckSF
+            - OpenPorchSF
+            - EnclosedPorch
+            - 3SsnPorch
+            - ScreenPorch
+            - PoolArea
+            - MiscVal
+            - MoSold
+            - YrSold
+            CAT_COLS:
+            - MSZoning
+            - Street
+            - Alley
+            - LotShape
+            - LandContour
+            - Utilities
+            - LotConfig
+            - LandSlope
+            - Neighborhood
+            - Condition1
+            - Condition2
+            - BldgType
+            - HouseStyle
+            - RoofStyle
+            - RoofMatl
+            - Exterior1st
+            - Exterior2nd
+            - MasVnrType
+            - ExterQual
+            - ExterCond
+            - Foundation
+            - BsmtQual
+            - BsmtCond
+            - BsmtExposure
+            - BsmtFinType1
+            - BsmtFinType2
+            - Heating
+            - HeatingQC
+            - CentralAir
+            - Electrical
+            - KitchenQual
+            - Functional
+            - FireplaceQu
+            - GarageType
+            - GarageFinish
+            - GarageQual
+            - GarageCond
+            - PavedDrive
+            - PoolQC
+            - Fence
+            - MiscFeature
+            - SaleType
+            - SaleCondition
+            - HasPool
+            - HasFence
           train_test_split_train_size: 0.8
           paths:
             hyperopt_best_model_path: models/hyperopt_best_model.joblib
@@ -191,26 +277,26 @@ stages:
             eval_metric: R2
     outs:
     - path: catboost_info/learn_error.tsv
-      md5: 8be121a6fb8721143a9ae7cec2987711
-      size: 28679
+      md5: 88221d27eee8729f4b894a373f7a1331
+      size: 28689
     - path: models/catboost_best_model.joblib
-      md5: 4f8b7142a2eb57e8892428cfaec45842
-      size: 1196344
+      md5: 3a019abd6fab48e2d459a60a6db32b54
+      size: 1208839
   train_hyperopt:
     cmd: python -m src.models.hyperopt.train_model --config=params.yaml
     deps:
     - path: data/interim/featurized_train_data_pkl
-      md5: 223d0baf1ca19913f2fd1dab9a2dcabf
-      size: 517727
+      md5: 0320eef95660b01bbd5780fe9dfd7575
+      size: 528140
     - path: src/config.py
-      md5: c0367088af98430432688ef14798ad96
-      size: 2552
+      md5: 818d08ec6794d822ebac2974183b74f6
+      size: 2795
     - path: src/models/hyperopt/find_best_model.py
-      md5: 6d07748c1893a652aa8599a38acd7fd9
-      size: 654
+      md5: 6c72fc95e7ac537a43eb8c3c1b474d13
+      size: 655
     - path: src/models/hyperopt/pipelines.py
-      md5: ff1f9c955e0c585800d91e2684ce0849
-      size: 409
+      md5: a6f2a875f59f54151d7f92c124dcc0a0
+      size: 421
     - path: src/models/hyperopt/train_model.py
       md5: eb2884db0f66a9721812ff442edbbc3c
       size: 1685
@@ -220,6 +306,90 @@ stages:
     params:
       params.yaml:
         train_models:
+          cols:
+            REAL_COLS:
+            - MSSubClass
+            - LotFrontage
+            - LotArea
+            - OverallQual
+            - OverallCond
+            - YearBuilt
+            - YearRemodAdd
+            - MasVnrArea
+            - BsmtFinSF1
+            - BsmtFinSF2
+            - BsmtUnfSF
+            - TotalBsmtSF
+            - 1stFlrSF
+            - 2ndFlrSF
+            - LowQualFinSF
+            - GrLivArea
+            - BsmtFullBath
+            - BsmtHalfBath
+            - FullBath
+            - HalfBath
+            - BedroomAbvGr
+            - KitchenAbvGr
+            - TotRmsAbvGrd
+            - Fireplaces
+            - GarageYrBlt
+            - GarageCars
+            - GarageArea
+            - WoodDeckSF
+            - OpenPorchSF
+            - EnclosedPorch
+            - 3SsnPorch
+            - ScreenPorch
+            - PoolArea
+            - MiscVal
+            - MoSold
+            - YrSold
+            CAT_COLS:
+            - MSZoning
+            - Street
+            - Alley
+            - LotShape
+            - LandContour
+            - Utilities
+            - LotConfig
+            - LandSlope
+            - Neighborhood
+            - Condition1
+            - Condition2
+            - BldgType
+            - HouseStyle
+            - RoofStyle
+            - RoofMatl
+            - Exterior1st
+            - Exterior2nd
+            - MasVnrType
+            - ExterQual
+            - ExterCond
+            - Foundation
+            - BsmtQual
+            - BsmtCond
+            - BsmtExposure
+            - BsmtFinType1
+            - BsmtFinType2
+            - Heating
+            - HeatingQC
+            - CentralAir
+            - Electrical
+            - KitchenQual
+            - Functional
+            - FireplaceQu
+            - GarageType
+            - GarageFinish
+            - GarageQual
+            - GarageCond
+            - PavedDrive
+            - PoolQC
+            - Fence
+            - MiscFeature
+            - SaleType
+            - SaleCondition
+            - HasPool
+            - HasFence
           train_test_split_train_size: 0.8
           paths:
             hyperopt_best_model_path: models/hyperopt_best_model.joblib
@@ -233,23 +403,23 @@ stages:
             eval_metric: R2
     outs:
     - path: models/hyperopt_best_model.joblib
-      md5: 3b5d9881f51a9a567bd9677993f310f6
-      size: 2308554
+      md5: ab70740714de065e792d529e9e977f56
+      size: 1952954
   pred_eval_hyperopt:
     cmd: python -m src.models.hyperopt.predict_n_eval_model --config=params.yaml
     deps:
     - path: data/interim/featurized_test_data_pkl
-      md5: 0d9a821ba9e8df33b8a92016065c3b77
-      size: 505522
+      md5: 00f02f2767e9c74802aa57fce0148b44
+      size: 515967
     - path: data/interim/featurized_train_data_pkl
-      md5: 223d0baf1ca19913f2fd1dab9a2dcabf
-      size: 517727
+      md5: 0320eef95660b01bbd5780fe9dfd7575
+      size: 528140
     - path: models/hyperopt_best_model.joblib
-      md5: 3b5d9881f51a9a567bd9677993f310f6
-      size: 2308554
+      md5: ab70740714de065e792d529e9e977f56
+      size: 1952954
     - path: src/config.py
-      md5: c0367088af98430432688ef14798ad96
-      size: 2552
+      md5: 818d08ec6794d822ebac2974183b74f6
+      size: 2795
     - path: src/models/hyperopt/predict_n_eval_model.py
       md5: 20808b960458c056890b89f07f1d6863
       size: 1659
@@ -273,32 +443,32 @@ stages:
             inference_predict: data/processed/catboost_predict.csv
     outs:
     - path: data/processed/hyperopt_predict.csv
-      md5: 834c3c412382d18a6ebc3bf64eeba96e
+      md5: be04fd6fad4fed24a6fca4d2d1902259
       size: 36475
     - path: reports/hyperopt_metrics.json
-      md5: 3d01f86bbd974fd32ce5f435320ee270
-      size: 98
+      md5: f651710c3d30f6f9d005aeadc54c6c2d
+      size: 100
   pred_eval_catboost:
     cmd: python -m src.models.catboost.predict_n_eval_model --config=params.yaml
     deps:
     - path: data/interim/featurized_test_data_pkl
-      md5: 0d9a821ba9e8df33b8a92016065c3b77
-      size: 505522
+      md5: 00f02f2767e9c74802aa57fce0148b44
+      size: 515967
     - path: data/interim/featurized_train_data_pkl
-      md5: 223d0baf1ca19913f2fd1dab9a2dcabf
-      size: 517727
+      md5: 0320eef95660b01bbd5780fe9dfd7575
+      size: 528140
     - path: models/catboost_best_model.joblib
-      md5: 4f8b7142a2eb57e8892428cfaec45842
-      size: 1196344
+      md5: 3a019abd6fab48e2d459a60a6db32b54
+      size: 1208839
     - path: src/config.py
-      md5: c0367088af98430432688ef14798ad96
-      size: 2552
+      md5: 818d08ec6794d822ebac2974183b74f6
+      size: 2795
     - path: src/models/catboost/predict_n_eval_model.py
       md5: ab4b85b71a31e507814c317cd2045391
       size: 1649
     - path: src/models/catboost/train_model.py
-      md5: 8e58dee394ae2c53332720084ba75ad3
-      size: 1674
+      md5: 8a4ab7adeca63fb64b2f9efece911df5
+      size: 1680
     - path: src/models/predict_n_eval_utils.py
       md5: 4dd99ed85e2fd5047758abd56adbaa5a
       size: 383
@@ -316,8 +486,17 @@ stages:
             inference_predict: data/processed/catboost_predict.csv
     outs:
     - path: data/processed/catboost_predict.csv
-      md5: 803bc34582b007d469b071650bea8a44
+      md5: 622f0ae2f8dec3544b3a0368b8c1d0f2
       size: 36475
     - path: reports/catboost_metrics.json
-      md5: 4131444ec03d57dda641277324ed93e8
+      md5: 8b75bd25e5a1411d251a0296b31dca1e
       size: 99
+  show_metrics:
+    cmd: dvc metrics show
+    deps:
+    - path: reports/catboost_metrics.json
+      md5: 8b75bd25e5a1411d251a0296b31dca1e
+      size: 99
+    - path: reports/hyperopt_metrics.json
+      md5: f651710c3d30f6f9d005aeadc54c6c2d
+      size: 100

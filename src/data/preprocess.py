@@ -3,10 +3,8 @@ import numpy as np
 from src.config import *
 import datetime as dt
 
-# TODO: implement it
+
 # use it only for generate cols for params.yaml
-
-
 def get_type_cols(df: pd.DataFrame) -> list:
     REAL_COLS = []
     CAT_COLS = []

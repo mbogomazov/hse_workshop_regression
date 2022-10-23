@@ -14,7 +14,7 @@ def find_best_model_by_hyperopt(train_data, train_target):
         preprocessing=any_preprocessing('pre'),
         algo=tpe.suggest,
         max_evals=max_evals,
-        trial_timeout=trial_timeout
+        trial_timeout=trial_timeout,
     )
 
     # perform the search

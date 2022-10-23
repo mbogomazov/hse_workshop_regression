@@ -89,3 +89,9 @@ stages:
     - data/processed/catboost_predict.csv
     metrics:
     - reports/catboost_metrics.json
+
+  show_metrics:
+    cmd: dvc metrics show
+    deps:
+    - reports/hyperopt_metrics.json
+    - reports/catboost_metrics.json

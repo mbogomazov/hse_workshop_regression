@@ -31,12 +31,17 @@ preprocessed_test_data_pkl = config['preprocess_data']['paths']['preprocessed_te
 YEAR_SOLD = config['generate_features']['cols']['YEAR_SOLD']
 YEAR_BUILT = config['generate_features']['cols']['YEAR_BUILT']
 BUILDING_AGE = config['generate_features']['cols']['BUILDING_AGE']
+HAS_FENCE = config['generate_features']['cols']['HAS_FENCE']
+HAS_POOL = config['generate_features']['cols']['HAS_POOL']
 
 featurized_train_data_pkl = config['generate_features']['paths']['featurized_train_data_pkl']
 featurized_test_data_pkl = config['generate_features']['paths']['featurized_test_data_pkl']
 
 # Model train step
 train_test_split_train_size = config['train_models']['train_test_split_train_size']
+TRAIN_CAT_COLS = config['train_models']['cols']['CAT_COLS']
+TRAIN_REAL_COLS = config['train_models']['cols']['REAL_COLS']
+
 # Hyperopt
 max_evals = config['train_models']['hyperopt']['max_evals']
 trial_timeout = config['train_models']['hyperopt']['trial_timeout']

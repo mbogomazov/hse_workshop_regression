@@ -27,8 +27,6 @@ def main():
     train_data, val_data, train_target, val_target = train_test_split(
         train, target, train_size=train_test_split_train_size, random_state=seed)
 
-    print(train_data)
-
     model = find_best_model_by_hyperopt(train_data, train_target)
 
     model_pipe = Pipeline([

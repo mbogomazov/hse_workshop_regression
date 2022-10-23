@@ -12,6 +12,6 @@ cat_pipe = Pipeline([
 ])
 
 preprocess_pipe = ColumnTransformer(transformers=[
-    ('real_cols', real_pipe, REAL_COLS),
-    ('cat_cols', cat_pipe, CAT_COLS),
+    ('real_cols', real_pipe, TRAIN_REAL_COLS),
+    ('cat_cols', cat_pipe, TRAIN_CAT_COLS),
 ])
